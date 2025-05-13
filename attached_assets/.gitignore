@@ -1,0 +1,15 @@
+# Ignore environment variables and secrets
+.env
+
+# Python cache and logs
+__pycache__/
+*.pyc
+
+# Node or frontend build folders (if any)
+node_modules/
+dist/
+build/
+
+# OS or editor files
+.DS_Store
+.vscode/

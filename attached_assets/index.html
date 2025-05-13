@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media Content Calendar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+  <div class="max-w-4xl mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold text-blue-600 text-center mb-6">
+      📅 Social Media Content Calendar
+    </h1>
+
+    <!-- Action buttons -->
+    <div class="flex justify-center gap-4 mb-8">
+      <button id="generateBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+        ✨ Generate AI Content
+      </button>
+      <button id="addPostBtn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+        ➕ Add New Post
+      </button>
+    </div>
+
+    <!-- Container for posts -->
+    <div id="calendar" class="space-y-4 text-gray-700">
+      <p class="text-center">Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const calendarContainer = document.getElementById("calendar");
+      const API_URL = window.location.origin + "/api/calendar";
+
+      fetch(API_URL)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!Array.isArray(data) || data.length === 0) {
+            calendarContainer.innerHTML = "<p class='text-center text-gray-500'>No calendar posts available.</p>";
+            return;
+          }
+
+          calendarContainer.innerHTML = data.map(post => `
+            <div class="bg-white shadow-md rounded-lg p-6">
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-blue-700">${post.platform}</h2>
+                <span class="text-sm text-gray-500">${new Date(post.scheduledTime).toLocaleString()}</span>
+              </div>
+              <p class="mt-2">${post.content}</p>
+            </div>
+          `).join("");
+        })
+        .catch(error => {
+          console.error("Fetch error:", error);
+          calendarContainer.innerHTML = "<p class='text-center text-red-500'>Error loading calendar. Try again later.</p>";
+        });
+
+      // Button action placeholders
+      document.getElementById("generateBtn").addEventListener("click", () => {
+        alert("AI content generation will be added soon!");
+      });
+
+      document.getElementById("addPostBtn").addEventListener("click", () => {
+        alert("Manual post creation will be available soon!");
+      });
+    });
+  </script>
+</body>
+</html>
